@@ -1,12 +1,14 @@
 {
-  "name": "date-lib",
+  "name": "@yomiadenaike/date-lib",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
+  "description": "Simple lightweight date helper functions",
+  "main": "date-lib.ts",
+  "keywords": [
+    "typescript",
+    "javascript",
+    "date",
+    "dates-library"
+  ],
+  "author": "Oluwayomi Adenaike",
   "license": "ISC"
 }

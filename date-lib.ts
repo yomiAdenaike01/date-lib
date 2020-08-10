@@ -146,7 +146,7 @@ export function formatDate(date?: Date, patternStr?: any): string {
         HH = twoDigitPad(hour),
         mm = twoDigitPad(minute),
         ss = twoDigitPad(second),
-        aaa = hour < 12 ? "AM" : "PM",
+        aaa = hour < 12 ? "am" : "pm",
         EEEE = dayOfWeekNames[date.getDay()],
         EEE = EEEE.slice(0, 3),
         dd = twoDigitPad(day),

@@ -14,13 +14,6 @@ export const monthNames: string[] = [
 ];
 export const dayOfWeekNames: string[] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
-export function getMonday(d: Date): Date {
-    d = new Date(d);
-    const day = d.getDay(),
-        diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-    return new Date(d.setDate(diff));
-}
-
 function twoDigitPad(num: number) {
     return num < 10 ? "0" + num : num;
 }

@@ -1,4 +1,4 @@
-export const monthNames: string[] = [
+export const monthsOfYear: string[] = [
     "January",
     "February",
     "March",
@@ -12,7 +12,7 @@ export const monthNames: string[] = [
     "November",
     "December",
 ];
-export const dayOfWeekNames: string[] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+export const daysOfWeek: string[] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
 function twoDigitPad(num: number) {
     return num < 10 ? "0" + num : num;

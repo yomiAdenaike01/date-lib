@@ -12,6 +12,8 @@ export const monthNames: string[] = [
     "November",
     "December",
 ];
+export const dayOfWeekNames: string[] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+
 export function getMonday(d: Date): Date {
     d = new Date(d);
     const day = d.getDay(),
@@ -19,7 +21,6 @@ export function getMonday(d: Date): Date {
     return new Date(d.setDate(diff));
 }
 
-export const dayOfWeekNames: string[] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 function twoDigitPad(num: number) {
     return num < 10 ? "0" + num : num;
 }
@@ -146,7 +147,7 @@ export function formatDate(date?: Date, patternStr?: any): string {
         HH = twoDigitPad(hour),
         mm = twoDigitPad(minute),
         ss = twoDigitPad(second),
-        aaa = hour < 12 ? "am" : "pm",
+        aaa = hour < 12 ? "AM" : "PM",
         EEEE = dayOfWeekNames[date.getDay()],
         EEE = EEEE.slice(0, 3),
         dd = twoDigitPad(day),

@@ -2,13 +2,27 @@
   "name": "@yomiadenaike/date-lib",
   "version": "1.0.0",
   "description": "Simple lightweight date helper functions",
-  "main": "date-lib.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yomiAdenaike01/date-lib.git"
+  },
+  "homepage":"https://github.com/yomiAdenaike01/date-lib/",
+  "scripts": {
+    "build":"tsc",
+    "prepare" : "npm run build"
+  },
+  "files": ["lib/**/*"],
   "keywords": [
     "typescript",
     "javascript",
     "date",
     "dates-library"
   ],
+  "devDependencies": {
+    "typescript": "^4.1.2"
+  },
   "author": "Oluwayomi Adenaike",
   "license": "ISC"
 }

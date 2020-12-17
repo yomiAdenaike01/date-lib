@@ -38,27 +38,60 @@ export namespace DateLib {
     | "setDate";
   export type DateFunc = DateSetter | DateGetter;
 
+  function handleCalcDate(
+    date: Date | Number,
+    index: DateIndex,
+    amount: number,
+    operation: "add" | "subtract"
+  ): Date {
+    const extensionsXref: Record<
+      DateIndex,
+      Record<"getter" | "setter", DateFunc>
+    > = {
+      hours: {
+        getter: "getHours",
+        setter: "setHours",
+      },
+      days: {
+        getter: "getDate",
+        setter: "setDate",
+      },
+      minutes: {
+        getter: "getMinutes",
+        setter: "setMinutes",
+      },
+      years: {
+        getter: "getFullYear",
+        setter: "setFullYear",
+      },
+      months: {
+        getter: "getMonth",
+        setter: "setMonth",
+      },
+    };
+    if (!date) {
+      date = new Date();
+    }
+    if (typeof date === "number") {
+      date = new Date(date);
+    }
+    const getterObj = extensionsXref[index]["getter"] as DateGetter;
+    const setterObj = extensionsXref[index]["setter"] as DateSetter;
+    let res = null;
+    let _date = date as Date;
+
+    if (operation === "subtract") {
+      res = new Date(_date[setterObj](_date[getterObj]() - amount));
+    } else {
+      res = new Date(_date[setterObj](_date[getterObj]() + amount));
+    }
+    return res;
+  }
+
   function twoDigitPad(num: number) {
     return num < 10 ? "0" + num : num;
   }
-  export function addMonths(date: Date, amount: number): Date {
-    return new Date(
-      date.getFullYear(),
-      date.getMonth() + amount,
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes()
-    );
-  }
-  export function addYears(date: Date, amount: number): Date {
-    return new Date(
-      date.getFullYear() + amount,
-      date.getMonth(),
-      date.getDate(),
-      date.getHours(),
-      date.getMinutes()
-    );
-  }
+
   export function isAfter(date1: Date, date2: Date): boolean {
     if (date1 && date2) {
       return date1.getTime() > date2.getTime();
@@ -153,68 +186,19 @@ export namespace DateLib {
     }
   }
 
-  export function addDays(date: Date, amount: number): Date {
-    return new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate() + amount
-    );
-  }
-  export function subtractDays(date: Date, amount: number): Date {
-    return new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate() - amount
-    );
-  }
-  export function calcDate(
+  export function add(
     date: Date | Number,
-    operation: "add" | "subtract",
     index: DateIndex,
     amount: number
   ): Date {
-    if (!date) {
-      date = new Date();
-    }
-    if (typeof date === "number") {
-      date = new Date(date);
-    }
-    const extensionsXref: Record<
-      DateIndex,
-      Record<"getter" | "setter", DateFunc>
-    > = {
-      hours: {
-        getter: "getHours",
-        setter: "setHours",
-      },
-      days: {
-        getter: "getDate",
-        setter: "setDate",
-      },
-      minutes: {
-        getter: "getMinutes",
-        setter: "setMinutes",
-      },
-      years: {
-        getter: "getFullYear",
-        setter: "setFullYear",
-      },
-      months: {
-        getter: "getMonth",
-        setter: "setMonth",
-      },
-    };
-    const getterObj = extensionsXref[index]["getter"] as DateGetter;
-    const setterObj = extensionsXref[index]["setter"] as DateSetter;
-
-    let res = null;
-    let _date = date as Date;
-    if (operation === "add") {
-      res = new Date(_date[setterObj](_date[getterObj]() + amount));
-    } else {
-      res = new Date(_date[setterObj](_date[getterObj]() - amount));
-    }
-    return res;
+    return handleCalcDate(date, index, amount, "add");
+  }
+  export function subtract(
+    date: Date | Number,
+    index: DateIndex,
+    amount: number
+  ): Date {
+    return handleCalcDate(date, index, amount, "subtract");
   }
 
   export function formatDate(date?: Date, patternStr?: any): string {
@@ -277,5 +261,3 @@ export namespace DateLib {
     return patternStr;
   }
 }
-
-

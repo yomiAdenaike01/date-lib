@@ -1,9 +1,9 @@
 {
   "name": "@yomiadenaike/date-lib",
-  "version": "1.0.0",
-  "description": "Simple lightweight date helper functions",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "version": "1.1.0",
+  "description": "Date helper functions",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yomiAdenaike01/date-lib.git"
@@ -13,7 +13,7 @@
     "build":"tsc",
     "prepare" : "npm run build"
   },
-  "files": ["lib/**/*"],
+  "files": ["dist/**/*"],
   "keywords": [
     "typescript",
     "javascript",

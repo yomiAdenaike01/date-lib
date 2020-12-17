@@ -1,3 +1,4 @@
+export const daysOfWeek: string[] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 export const monthsOfYear: string[] = [
     "January",
     "February",
@@ -12,7 +13,11 @@ export const monthsOfYear: string[] = [
     "November",
     "December",
 ];
-export const daysOfWeek: string[] = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+
+export type DateIndex = 'months'|'years'|'minutes'|'hours'|'days';
+export type DateGetter = 'getHours'|'getMinutes'|'getFullYear'|'getMonth'|'getDate';
+export type DateSetter = 'setFullYear'|'setMinutes'|'setHours'|'setMonth'|'setDate';
+export type DateFunc  = DateSetter|DateGetter
 
 function twoDigitPad(num: number) {
     return num < 10 ? "0" + num : num;
@@ -115,6 +120,51 @@ export function addDays(date: Date, amount: number): Date {
 }
 export function subtractDays(date: Date, amount: number): Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate() - amount);
+}
+export function calcDate(date:Date|Number,operation:'add'|'subtract',index:DateIndex,amount:number):Date {
+    if(!date){
+        date = new Date()
+    }
+    if(typeof date === 'number'){
+        date = new Date(date)
+    }
+    const extensionsXref:Record<DateIndex,Record<'getter'|'setter',DateFunc>> = {
+        hours:{
+            getter:'getHours',
+            setter:'setHours'
+        },
+        days:{
+            getter:'getDate',
+            setter:'setDate'
+        },
+        minutes:{
+            getter:'getMinutes',
+            setter:'setMinutes'
+        },
+        years:{
+            getter:'getFullYear',
+            setter:'setFullYear'
+        },
+        months:{
+            getter:'getMonth',
+            setter:'setMonth'
+        }
+        
+
+    }
+    const getterObj = extensionsXref[index]['getter'] as DateGetter
+    const setterObj = extensionsXref[index]['setter'] as DateSetter
+
+    let res = null;
+    let _date = date as Date;
+    if(operation === 'add'){
+        res = new Date(_date[setterObj](_date[getterObj]() + amount))
+    }else {
+        res = new Date(_date[setterObj](_date[getterObj]() - amount))
+    }
+    return res
+
+   
 }
 
 export function formatDate(date?: Date, patternStr?: any): string {

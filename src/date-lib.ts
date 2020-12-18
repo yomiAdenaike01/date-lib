@@ -37,7 +37,21 @@ export namespace DateLib {
     | "setMonth"
     | "setDate";
   export type DateFunc = DateSetter | DateGetter;
+  /**
+   * @name secondsToTimeFormat
+   * @param secs
+   */
+  export function formatSecondsToTime(secs: number): string {
+    const secNum = parseInt(String(secs), 10)
+    const hours = Math.floor(secNum / 3600)
+    const minutes = Math.floor(secNum / 60) % 60
+    const seconds = secNum % 60
 
+    return [hours, minutes, seconds]
+      .map((v) => (v < 10 ? '0' + v : v))
+      .filter((v, i) => v !== '00' || i > 0)
+      .join(':')
+  }
   function handleCalcDate(
     date: Date | Number,
     index: DateIndex,

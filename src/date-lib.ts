@@ -1,66 +1,39 @@
-export namespace DateLib {
-  export const daysOfWeek: string[] = [
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-  ];
-  export const monthsOfYear: string[] = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+import * as config from "./config";
 
-  export type DateIndex = "months" | "years" | "minutes" | "hours" | "days";
-  export type DateGetter =
-    | "getHours"
-    | "getMinutes"
-    | "getFullYear"
-    | "getMonth"
-    | "getDate";
-  export type DateSetter =
-    | "setFullYear"
-    | "setMinutes"
-    | "setHours"
-    | "setMonth"
-    | "setDate";
-  export type DateFunc = DateSetter | DateGetter;
+
+
+export namespace DateLib {
   /**
-   * @name secondsToTimeFormat
+   * @name formatSecondsToTime
    * @param secs
    */
   export function formatSecondsToTime(secs: number): string {
-    const secNum = parseInt(String(secs), 10)
-    const hours = Math.floor(secNum / 3600)
-    const minutes = Math.floor(secNum / 60) % 60
-    const seconds = secNum % 60
+    const secNum = parseInt(String(secs), 10);
+    const hours = Math.floor(secNum / 3600);
+    const minutes = Math.floor(secNum / 60) % 60;
+    const seconds = secNum % 60;
 
     return [hours, minutes, seconds]
-      .map((v) => (v < 10 ? '0' + v : v))
-      .filter((v, i) => v !== '00' || i > 0)
-      .join(':')
+      .map((v) => (v < 10 ? "0" + v : v))
+      .filter((v, i) => v !== "00" || i > 0)
+      .join(":");
   }
+  /**
+   * 
+   * @param date 
+   * @param index 
+   * @param amount 
+   * @param operation 
+   */
   function handleCalcDate(
     date: Date | Number,
-    index: DateIndex,
+    index: config.DateIndex,
     amount: number,
     operation: "add" | "subtract"
   ): Date {
     const extensionsXref: Record<
-      DateIndex,
-      Record<"getter" | "setter", DateFunc>
+      config.DateIndex,
+      Record<"getter" | "setter", config.DateFunc>
     > = {
       hours: {
         getter: "getHours",
@@ -89,8 +62,8 @@ export namespace DateLib {
     if (typeof date === "number") {
       date = new Date(date);
     }
-    const getterObj = extensionsXref[index]["getter"] as DateGetter;
-    const setterObj = extensionsXref[index]["setter"] as DateSetter;
+    const getterObj = extensionsXref[index]["getter"] as config.DateGetter;
+    const setterObj = extensionsXref[index]["setter"] as config.DateSetter;
     let res = null;
     let _date = date as Date;
 
@@ -101,11 +74,19 @@ export namespace DateLib {
     }
     return res;
   }
-
+  /**
+   * @name twoDigitPad
+   * @param num 
+   */
   function twoDigitPad(num: number) {
     return num < 10 ? "0" + num : num;
   }
 
+  /**
+   * @name isAfter
+   * @param date1 
+   * @param date2 
+   */
   export function isAfter(date1: Date, date2: Date): boolean {
     if (date1 && date2) {
       return date1.getTime() > date2.getTime();
@@ -113,6 +94,11 @@ export namespace DateLib {
       return false;
     }
   }
+  /**
+   * @name isBefore
+   * @param date1 
+   * @param date2 
+   */
   export function isBefore(date1: Date, date2: Date): boolean {
     if (date1 && date2) {
       return date1.getTime() < date2.getTime();
@@ -120,6 +106,12 @@ export namespace DateLib {
       return false;
     }
   }
+  /**
+   * @name isWithinMinuteRange
+   * @param minutes 
+   * @param date1 
+   * @param date2 
+   */
   export function isWithinMinuteRange(
     minutes: number,
     date1?: Date,
@@ -140,6 +132,11 @@ export namespace DateLib {
       return false;
     }
   }
+  /**
+   * @name isSameDate
+   * @param date1 
+   * @param date2 
+   */
   export function isSameDate(date1?: Date, date2?: Date): boolean {
     if (typeof date1 == "string") {
       date1 = new Date(date1);
@@ -155,6 +152,11 @@ export namespace DateLib {
       return false;
     }
   }
+  /**
+   * @name isSameMonth
+   * @param date1 
+   * @param date2 
+   */
   export function isSameMonth(date1?: Date, date2?: Date): boolean {
     if (typeof date1 == "string") {
       date1 = new Date(date1);
@@ -168,6 +170,11 @@ export namespace DateLib {
       return false;
     }
   }
+  /**
+   * @name isSameYear
+   * @param date1 
+   * @param date2 
+   */
   export function isSameYear(date1?: Date, date2?: Date): boolean {
     if (typeof date1 == "string") {
       date1 = new Date(date1);
@@ -181,6 +188,11 @@ export namespace DateLib {
       return false;
     }
   }
+  /**
+   * @name isSameHour
+   * @param date1 
+   * @param date2 
+   */
   export function isSameHour(date1?: Date, date2?: Date): boolean {
     if (typeof date1 == "string") {
       date1 = new Date(date1);
@@ -199,22 +211,37 @@ export namespace DateLib {
       return false;
     }
   }
-
+  /**
+   * @name add
+   * @param date 
+   * @param index 
+   * @param amount 
+   */
   export function add(
     date: Date | Number,
-    index: DateIndex,
+    index: config.DateIndex,
     amount: number
   ): Date {
     return handleCalcDate(date, index, amount, "add");
   }
+  /**
+   * @name subtract
+   * @param date 
+   * @param index 
+   * @param amount 
+   */
   export function subtract(
     date: Date | Number,
-    index: DateIndex,
+    index: config.DateIndex,
     amount: number
   ): Date {
     return handleCalcDate(date, index, amount, "subtract");
   }
-
+  /**
+   * @name formatDate
+   * @param date 
+   * @param patternStr 
+   */
   export function formatDate(date?: Date, patternStr?: any): string {
     if (!patternStr) {
       patternStr = "d/M/yyyy HH:mm";
@@ -239,12 +266,12 @@ export namespace DateLib {
       mm = twoDigitPad(minute),
       ss = twoDigitPad(second),
       aaa = hour < 12 ? "AM" : "PM",
-      EEEE = daysOfWeek[date.getDay()],
+      EEEE = config.DAYS_OF_WEEK[date.getDay()],
       EEE = EEEE.slice(0, 3),
       dd = twoDigitPad(day),
       M = month + 1,
       MM = twoDigitPad(M),
-      MMMM = monthsOfYear[month],
+      MMMM = config.MONTHS_OF_YEAR[month],
       MMM = MMMM.substr(0, 3),
       yyyy = year + "",
       yy = yyyy.substr(2, 2);
